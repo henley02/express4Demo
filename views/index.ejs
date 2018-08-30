@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+<div class="well jumbotron">
+    <h1><%= title %></h1>
+    <div>你好</div>
+    <ul>
+        <% for(var i = 0;i < list.length;i++){ %>
+        <li><%= list[i] %></li>
+        <% } %>
+    </ul>
+    <%- include public.ejs %>
+</div>
+</body>
+</html>

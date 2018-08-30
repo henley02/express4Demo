@@ -1,0 +1,24 @@
+{
+  "name": "express4Demo",
+  "version": "1.0.0",
+  "description": "express 学习",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henley02/express4Demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/henley02/express4Demo/issues"
+  },
+  "homepage": "https://github.com/henley02/express4Demo#readme",
+  "devDependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  }
+}
