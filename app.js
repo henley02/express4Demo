@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const connectMongo = require('connect-mongo')(session);
+const {DBUrl, DBName} = require('./services/config');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');//设置模板引擎
@@ -14,6 +15,8 @@ app.use(bodyParser.json());
 app.use(cookieParser(''));
 
 const user = require('./services/user');
+const product = require('./services/product');
+
 
 app.use(session({
     secret: '1231afasdf',//签名
@@ -27,33 +30,31 @@ app.use(session({
     rolling: true,//在每次请求时强行设置 cookie，这将重置 cookie 过期时间（默认：false）
 
     store: new connectMongo({
-        url: 'mongodb://127.0.0.1:27017/test',
+        url: `${DBUrl}/${DBName}`,
         touchAfter: 24 * 3600,
     })
 }))
 
+//自定义中间件，判断用户登录情况
 app.use(function (req, res, next) {
-    console.log('--------');
-    console.log(new Date());
-    next();
+    if (req.url === '/login' || req.url === '/user/doLogin') {
+        next();
+    } else {
+        if (req.session.userInfo && req.session.userInfo.username !== '') {
+            //ejs 设置全局数据，所有的页面 都能看到
+            app.locals['userInfo'] = req.session.userInfo;
+            next();
+        } else {
+            res.redirect('/login');
+        }
+    }
 })
+
 
 app.get('/', function (req, res) {
-    res.redirect('/product');
+    res.redirect('/product/list');
 })
 
-app.get('/product', function (req, res) {
-    res.render('product', {
-        title: '商品列表',
-    })
-});
-
-app.get('/loginOut', function (req, res) {
-    req.session.destroy(function (err) {
-        cosole.log(err);
-    })
-    res.send("退出成功")
-})
 
 app.get('/login', function (req, res) {
     res.render('login', {
@@ -61,10 +62,12 @@ app.get('/login', function (req, res) {
     })
 })
 
+
 app.get('/productEdit', function (req, res) {
     res.render('edit', {title: '编辑商品列表'});
 })
 
+app.use('/product', product);
 app.use('/user', user);
 
 app.use(function (req, res) {

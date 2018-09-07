@@ -3,7 +3,15 @@ app = express();
 const MongoClient = require('mongodb').MongoClient;
 const {DBUrl, DBName} = require('./config');
 const router = express.Router();
-const session = require('express-session');
+const md5 = require('md5-node');
+
+router.get('/loginOut', function (req, res) {
+    //销毁session
+    req.session.destroy(function (err) {
+        console.log(err);
+    })
+    res.redirect("/login")
+})
 
 router.post('/doLogin', function (req, res) {
     let params = req.body;
@@ -17,12 +25,14 @@ router.post('/doLogin', function (req, res) {
             return;
         }
         const db = client.db(DBName);
+        params.password = md5(params.password);
+        console.log(params);
         const result = db.collection('user').find(params);
         result.toArray(function (err, data) {
             if (data.length === 0) {
                 res.json({msg: '用户名不存在或者密码错误', code: -1, data: ''});
             } else {
-                session.userInfo = data[0];
+                req.session.userInfo = data[0];
                 res.json({msg: '登录成功', code: 1, data: ''});
             }
             client.close();

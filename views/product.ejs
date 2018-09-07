@@ -1,9 +1,9 @@
 <%- include header.ejs %>
-<%- include components/navbar.ejs%>
+<%- include components/navbar.ejs %>
 
 <div class="container-fluid">
     <div class="row">
-        <%- include components/list-group-item.ejs%>
+        <%- include components/list-group-item.ejs %>
         <div class="col-sm-10">
             <ol class="breadcrumb">
                 <li class="active">商品管理
@@ -40,47 +40,24 @@
                         <th>名称</th>
                         <th>价格</th>
                         <th>邮费</th>
-
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
                     <tbody>
-
+                    <% list.forEach(function (item, index) { %>
                     <tr>
-                        <td>1</td>
-                        <td>图标</td>
-                        <td>背包1111111</td>
-                        <td>20元</td>
-                        <td>10元</td>
-
+                        <td><%= index + 1 %></td>
+                        <td><img src="<%= item.pic %>" width="200px"></td>
+                        <td><%= item.title %></td>
+                        <td><%= item.price %></td>
+                        <td><%= item.fee %></td>
                         <td class="text-center">修改 删除</td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>图标</td>
-                        <td>thinpad笔记本电脑</td>
-                        <td>20元</td>
-                        <td>10元</td>
-
-                        <td class="text-center">修改 删除</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>图标</td>
-                        <td>iphone7</td>
-                        <td>20元</td>
-                        <td>10元</td>
-
-                        <td class="text-center">修改 删除</td>
-                    </tr>
-
+                    <% }) %>
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 </div>
-
-</body>
-</html>
+<%- include footer.ejs %>

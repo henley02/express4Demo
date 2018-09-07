@@ -51,7 +51,7 @@
             },
             success: function (res) {
                 if (res.code === 1) {
-                    location.href = '/product';
+                    location.href = '/product/list';
                 } else {
                     Ewin.alert({title: '温馨提示', message: res.msg});
                 }
