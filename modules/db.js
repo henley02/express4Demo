@@ -7,10 +7,11 @@ function __connectDB(callback) {
             console.log("数据库连接失败");
             return;
         }
-        callback(err, client);
+        callback(error, client);
     })
 }
 
+//查找数据
 exports.find = function (collectionName, json, callback) {
     __connectDB(function (err, client) {
         const db = client.db(DBName);
