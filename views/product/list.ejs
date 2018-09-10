@@ -1,9 +1,9 @@
-<%- include header.ejs %>
-<%- include components/navbar.ejs %>
+<%- include ../components/header.ejs %>
+<%- include ../components/navbar.ejs %>
 
 <div class="container-fluid">
     <div class="row">
-        <%- include components/list-group-item.ejs %>
+        <%- include ../components/list-group-item.ejs %>
         <div class="col-sm-10">
             <ol class="breadcrumb">
                 <li class="active">商品管理
@@ -47,11 +47,14 @@
                     <% list.forEach(function (item, index) { %>
                     <tr>
                         <td><%= index + 1 %></td>
-                        <td><img src="<%= item.pic %>" width="200px"></td>
+                        <td><img src="<%= '/' + item.pic %>" width="200px"></td>
                         <td><%= item.title %></td>
                         <td><%= item.price %></td>
                         <td><%= item.fee %></td>
-                        <td class="text-center">修改 删除</td>
+                        <td class="text-center">
+                            <a href="/product/edit?id=<%=item._id%>" class="btn btn-success">修改</a>
+                            <a href="/product/delete?id=<%=item._id%>" class="btn btn-danger">删除</a>
+                        </td>
                     </tr>
                     <% }) %>
                     </tbody>
@@ -60,4 +63,4 @@
         </div>
     </div>
 </div>
-<%- include footer.ejs %>
+<%- include ../components/footer.ejs %>

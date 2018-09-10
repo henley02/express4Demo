@@ -20,6 +20,10 @@ router.post('/doLogin', function (req, res) {
     }
     params.password = md5(params.password);
     find('user', params, function (error, data) {
+        if (error) {
+            res.json({msg: error, code: -1, data: ''});
+            return;
+        }
         if (data.length === 0) {
             res.json({msg: '用户名不存在或者密码错误', code: -1, data: ''});
         } else {
