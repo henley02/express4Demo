@@ -16,7 +16,8 @@
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive input-form">
-                        <form action="/doAdd" method="post">
+                        <form action="/product/doEdit" method="post" enctype="multipart/form-data">
+                            <input type="hidden" value="<%= data._id %>" name="id">
                             <ul>
                                 <li> 商品名称: <input type="text" name="title" value="<%= data.title %>"/></li>
 
