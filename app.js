@@ -2,11 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
-// const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const connectMongo = require('connect-mongo')(session);
-const {DBUrl, DBName} = require('./services/config');
-
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');//设置模板引擎
@@ -15,10 +11,9 @@ app.use('/upload', express.static(path.join(__dirname, 'upload')));//设置静�
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-// app.use(cookieParser(''));
 
-const user = require('./services/user');
-const product = require('./services/product');
+const user = require('./router/user');
+const product = require('./router/product');
 
 app.use(session({
     secret: '1231afasdf',//签名
@@ -34,7 +29,6 @@ app.use(session({
 
 //自定义中间件，判断用户登录情况
 app.use(function (req, res, next) {
-    console.log("------------")
     if (req.url === '/login' || req.url === '/user/doLogin') {
         next();
     } else {
@@ -60,7 +54,6 @@ app.get('/login', function (req, res) {
 
 app.use('/product', product);
 app.use('/user', user);
-
 app.use(function (req, res) {
     res.status(404).send('这个是404 路由没有匹配到');
 });

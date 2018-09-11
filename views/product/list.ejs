@@ -52,8 +52,9 @@
                         <td><%= item.price %></td>
                         <td><%= item.fee %></td>
                         <td class="text-center">
-                            <a href="/product/edit?id=<%=item._id%>" class="btn btn-success">修改</a>
-                            <a href="/product/delete?id=<%=item._id%>" class="btn btn-danger">删除</a>
+                            <a href="/product/edit?id=<%= item._id %>" class="btn btn-success">修改</a>
+                            <button class="btn btn-danger" onclick="del('<%= item.title %>','<%= item._id %>')">删除
+                            </button>
                         </td>
                     </tr>
                     <% }) %>
@@ -64,3 +65,26 @@
     </div>
 </div>
 <%- include ../components/footer.ejs %>
+<script>
+    function del(title, id) {
+        Ewin.confirm({title: '温馨提示', message: '确定删除' + title + '吗？'}).on(function (e) {
+            if (e) {
+                $.ajax({
+                    url: "/product/delete",
+                    data: {id: id},
+                    type: "post",    //数据发送方式
+                    error: function () {
+                        alert("服务器没有返回数据，可能服务器忙，请重试");
+                    },
+                    success: function (res) {
+                        if (res.code === 1) {
+                            location.reload();
+                        } else {
+                            Ewin.alert({title: '温馨提示', message: res.msg});
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>

@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const {DBUrl, DBName} = require('./../services/config');
+const {DBUrl, DBName} = require('./../config/config');
 const objectId = require('mongodb').ObjectID;
 
 function __connectDB(callback) {

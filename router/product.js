@@ -3,7 +3,7 @@ app = express();
 const {find, insert, deleteOne, objectId, update} = require('./../modules/db');
 const router = express.Router();
 const multiparty = require('multiparty');//图片上传模块，既可以获取form表单的是数据，又可以实现上传图片
-
+const fs = require('fs');
 /**
  * 打开产品列表
  */
@@ -19,13 +19,13 @@ router.get('/list', function (req, res) {
 /**
  * 根据id删除产品
  */
-router.get('/delete', function (req, res) {
-    deleteOne('product', {_id: new objectId(req.query.id)}, function (error, data) {
+router.post('/delete', function (req, res) {
+    deleteOne('product', {_id: new objectId(req.body.id)}, function (error, data) {
         if (error) {
-            console.log('删除数据失败');
+            res.json({msg: '删除数据失败', code: -1, data: ''});
             return;
         }
-        res.redirect("/product/list");
+        res.json({msg: '删除数据成功', code: 1, data: ''});
     })
 })
 
@@ -95,8 +95,10 @@ router.post('/doEdit', function (req, res) {
                 fee: fields.fee[0],
                 description: fields.description[0],
             }
-            if (files.pic[0].originalFilename != '') {
+            if (files.pic[0].originalFilename != '') {//如果上传了图片
                 json.pic = files.pic[0].path;
+            } else {
+                fs.unlink(files.pic[0].path);//删除临时文件
             }
             update('product', {_id: new objectId(fields.id[0])}, json, function (error, data) {
                 if (error) {
